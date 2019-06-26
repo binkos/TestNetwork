@@ -1,13 +1,18 @@
 package com.example.testnetwork.Person;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
-@Entity
+@Entity(primaryKeys = {"_id","login"})
 public class Person {
-    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "_id")
+    @NonNull
     public long id;
-    public String name;
+    @NonNull
+    public String login;
+    public String password;
     public int age;
     public int salary;
 }

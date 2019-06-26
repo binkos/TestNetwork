@@ -13,7 +13,7 @@ public interface PersonDao {
     @Query("select * from Person")
     public List<Person> getAll();
 
-    @Query("select * from Person where id = :id")
+    @Query("select * from Person where _id = :id")
     public Person getById(long id);
 
     @Insert

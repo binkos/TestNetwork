@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">TestNetwork</string>
+    <string name="description">Icon of the project</string>
+    <string name="LogIn">Login</string>
+    <string name="PasswordField">Password</string>
+    <string name="ButLog">LogIn</string>
 </resources>
