@@ -1,10 +1,12 @@
 package com.example.testnetwork;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.testnetwork.Person.App;
 import com.example.testnetwork.Person.AppDataBase;
@@ -22,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     EditText logField;
     EditText pasField;
+    TextView registration;
     Button LogIn;
     AppDataBase app;
     PersonDao personDao;
@@ -36,19 +39,26 @@ public class MainActivity extends AppCompatActivity {
         LogIn =  findViewById(R.id.LogIn);
         app = App.getInstance().getDataBase();
         personDao = app.personDao();
+        registration = findViewById(R.id.reg);
+        
+
+        registration.setOnClickListener(e->{
+
+        });
 
     }
 
     public void Login(View view){
         if (!logField.getText().toString().trim().equals("")){
-            LoggedIn()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
+            LoggedIn().subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 o->{
-                                    if (o.equals(true)){
-                                    logField.setText("you logged in");
-                                    pasField.setText("you logged in");
+                                    if (o[0]!=null){
+                                        Intent intent = new Intent(this,AccountOfPerson.class);
+                                        intent.putExtra("login",o[0]);
+                                        intent.putExtra("password",o[1]);
+                                        startActivity(intent);
                                     }else {
                                         logField.setText("you didn't log in");
                                         pasField.setText("you didn't log in");
@@ -57,29 +67,14 @@ public class MainActivity extends AppCompatActivity {
                                 e->{},
                                 ()->{},
                                 d->{}
-//                                new Observer<Boolean>() {
-//                                       @Override
-//                                       public void onSubscribe(Disposable d) {
-//                                       }
-//                                       @Override
-//                                       public void onNext(Boolean value) {
-//                                           logField.setText("you logged in");
-//                                            pasField.setText("you logged in");
-//                                       }
-//                                       @Override
-//                                       public void onError(Throwable e) {
-//
-//                                       }
-//                                       @Override
-//                                       public void onComplete() {
-//                                       }
-//                                   }
                         );
-        }else {logField.setText("fields are empty");
-            pasField.setText("fields are empty");}
+        }else {
+            logField.setText("fields are empty");
+            pasField.setText("fields are empty");
+        }
        }
 
-    public Observable<Boolean> LoggedIn(){
+    public Observable<String[]> LoggedIn(){
         return Observable.create(
                 o->{
                     String log = logField.getText().toString();
@@ -89,14 +84,14 @@ public class MainActivity extends AppCompatActivity {
                             if (person.login.equals(log)
                                     &&person.password.equals(pas)
                             ) {
-                                o.onNext(true);
+                                o.onNext(new String[]{log,pas});
                                 o.onComplete();
                                 log="";
                                 break;
                             }
                         }
                         if (!log.equals("")){
-                            o.onNext(false);
+                            o.onNext(new String[]{null,null});
                         }
                 }
         );

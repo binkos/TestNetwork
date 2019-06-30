@@ -30,7 +30,6 @@
         android:ems="10"
         android:inputType="textPassword"
          />
-
     <Button
         android:id="@+id/LogIn"
         android:layout_width="match_parent"
@@ -38,4 +37,10 @@
         android:text="@string/ButLog"
         android:onClick="Login"/>
 
+    <TextView
+        android:id="@+id/reg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Registration"
+        android:textAlignment="center" />
 </LinearLayout>
