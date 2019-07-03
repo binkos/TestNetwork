@@ -16,6 +16,9 @@ public interface PersonDao {
     @Query("select * from Person where _id = :id")
     public Person getById(long id);
 
+    @Query("select * from Person where login = :login")
+    public Person getByLogin(String login);
+
     @Insert
     void insert(Person person);
 

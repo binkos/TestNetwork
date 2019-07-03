@@ -6,9 +6,18 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.TextView;
 
+import com.example.testnetwork.Person.App;
+import com.example.testnetwork.Person.AppDataBase;
+import com.example.testnetwork.Person.Person;
+import com.example.testnetwork.Person.PersonDao;
+
+
 public class AccountOfPerson extends Activity {
     TextView logInField;
     TextView passwordField;
+    Person person;
+    AppDataBase app;
+    PersonDao personDao;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -16,12 +25,18 @@ public class AccountOfPerson extends Activity {
         setContentView(R.layout.accont_of_person);
         logInField = findViewById(R.id.loginOfAccount);
         passwordField = findViewById(R.id.passwordOfAccount);
+        app = App.getInstance().getDataBase();
+        personDao = app.personDao();
 
-        Bundle extras = (Bundle) getIntent().getExtras();
-        if(extras!= null){
-        logInField.setText(extras.getString("login"));
-        passwordField.setText(extras.getString("password"));
+        Bundle extras = getIntent().getExtras();
+        if (extras!=null){
+            String login = extras.getString("login");
+            person = personDao.getByLogin(login);
+
+            logInField.setText(login);
+            passwordField.setText(person.password);
+        };
+
         }
 
     }
-}

@@ -15,12 +15,8 @@ import com.example.testnetwork.Person.PersonDao;
 
 import java.util.List;
 
-import io.reactivex.Flowable;
 import io.reactivex.Observable;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class RegistrationOfPerson extends Activity {
@@ -28,6 +24,7 @@ public class RegistrationOfPerson extends Activity {
     EditText passwordRegistration;
     EditText repeatPasswordReggistration;
     Button registrationButton;
+    Person person;
     AppDataBase app;
     PersonDao personDao;
 
@@ -57,10 +54,7 @@ public class RegistrationOfPerson extends Activity {
                         if (o){
                             if(comparePasswords(pas1,pas2)) {
                                 addToDatabase(login,pas1);
-                                Intent intent = new Intent(this,AccountOfPerson.class);
-                                intent.putExtra("login",login);
-                                intent.putExtra("password",pas1);
-                                startActivity(intent);
+                                startActivity(createPersonAndIntent(login));
                             }
                         }else loginRegistration.setText("FAIL");
                             },
@@ -96,12 +90,18 @@ public class RegistrationOfPerson extends Activity {
     }
 
     public void addToDatabase(String login,String password){
-        Person person = new Person();
+        person = new Person();
         person.login = login;
         person.password = password;
         personDao.insert(person);
     }
 
+    Intent createPersonAndIntent(String login){
 
+        Intent intent = new Intent(RegistrationOfPerson.this,AccountOfPerson.class);
+
+        intent.putExtra("login",login);
+        return intent;
+    }
 
 }

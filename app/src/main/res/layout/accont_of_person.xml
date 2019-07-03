@@ -1,16 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/loginOfAccount"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/passwordOfAccount"
+        android:layout_marginBottom="0dp" />
+
     <TextView
         android:id="@+id/passwordOfAccount"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="581dp" />
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="98dp"
+        android:layout_height="87dp"
+        android:layout_above="@+id/loginOfAccount"
+        android:layout_alignStart="@+id/loginOfAccount"
+        android:layout_alignLeft="@+id/loginOfAccount"
+        android:layout_alignEnd="@+id/loginOfAccount"
+        android:layout_alignRight="@+id/loginOfAccount"
+        android:layout_marginStart="14dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginEnd="299dp"
+        android:layout_marginRight="299dp"
+        android:layout_marginBottom="15dp"
+        app:srcCompat="@mipmap/ic_launcher" />
+
+</RelativeLayout>
