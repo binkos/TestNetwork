@@ -1,9 +1,8 @@
 package com.example.testnetwork;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.example.testnetwork.Person.App;
@@ -12,7 +11,7 @@ import com.example.testnetwork.Person.Person;
 import com.example.testnetwork.Person.PersonDao;
 
 
-public class AccountOfPerson extends Activity {
+public class AccountOfPerson extends AppCompatActivity {
     TextView logInField;
     TextView passwordField;
     Person person;

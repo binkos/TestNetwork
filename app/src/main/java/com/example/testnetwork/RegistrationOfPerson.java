@@ -1,9 +1,9 @@
 package com.example.testnetwork;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,10 +19,10 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class RegistrationOfPerson extends Activity {
+public class RegistrationOfPerson extends AppCompatActivity {
     EditText loginRegistration;
     EditText passwordRegistration;
-    EditText repeatPasswordReggistration;
+    EditText repeatPasswordRegistration;
     Button registrationButton;
     Person person;
     AppDataBase app;
@@ -35,7 +35,7 @@ public class RegistrationOfPerson extends Activity {
 
         loginRegistration = findViewById(R.id.registration_login);
         passwordRegistration = findViewById(R.id.registration_password);
-        repeatPasswordReggistration = findViewById(R.id.registration_repeat_password);
+        repeatPasswordRegistration = findViewById(R.id.registration_repeat_password);
         registrationButton = findViewById(R.id.registration_button);
 
         app = App.getInstance().getDataBase();
@@ -45,8 +45,8 @@ public class RegistrationOfPerson extends Activity {
     void registratePerson(View view){
         String login = loginRegistration.getText().toString().trim();
         String pas1 = passwordRegistration.getText().toString().trim();
-        String pas2 = repeatPasswordReggistration.getText().toString().trim();
-        if (!login.equals("")){
+        String pas2 = repeatPasswordRegistration.getText().toString().trim();
+        if (!login.equals("")&!pas1.equals("")){
             compareLogin()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

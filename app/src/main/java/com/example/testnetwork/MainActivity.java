@@ -43,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
         
 
         registration.setOnClickListener(e->{
-
+            Intent intent = new Intent(this,RegistrationOfPerson.class);
+            startActivity(intent);
         });
 
     }
