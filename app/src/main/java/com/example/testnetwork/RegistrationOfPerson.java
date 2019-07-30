@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,7 +26,6 @@ public class RegistrationOfPerson extends AppCompatActivity {
     EditText repeatPasswordRegistration;
     Button registrationButton;
     Person person;
-    AppDataBase app;
     PersonDao personDao;
 
     @Override
@@ -38,17 +38,18 @@ public class RegistrationOfPerson extends AppCompatActivity {
         repeatPasswordRegistration = findViewById(R.id.registration_repeat_password);
         registrationButton = findViewById(R.id.registration_button);
 
-        app = App.getInstance().getDataBase();
-        personDao = app.personDao();
+
+        personDao = App.getInstance().getDataBase().personDao();
     }
 
     void registratePerson(View view){
+        Log.d("LOG","Hello from Reg");
         String login = loginRegistration.getText().toString().trim();
         String pas1 = passwordRegistration.getText().toString().trim();
         String pas2 = repeatPasswordRegistration.getText().toString().trim();
-        if (!login.equals("")&!pas1.equals("")){
-            compareLogin()
-                    .subscribeOn(Schedulers.io())
+        if (!login.equals("")&&!pas1.equals("")){
+            Log.d("LOG","Hello from if");
+            compareLogin().subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(o->{
                         if (o){
@@ -66,6 +67,7 @@ public class RegistrationOfPerson extends AppCompatActivity {
     }
 
     boolean comparePasswords(String pas1,String pas2){
+        Log.d("LOG","Hello from comparePasswords");
         return pas1.equals(pas2);
     }
 
@@ -73,23 +75,27 @@ public class RegistrationOfPerson extends AppCompatActivity {
     public Observable<Boolean> compareLogin(){
         return Observable.create(
                 o->{
-                    String login = loginRegistration.getText().toString();
+                    String login = loginRegistration.getText().toString().trim();
                     List<Person> people = personDao.getAll();
-                    for (Person person:people){
-                        if (!person.login.equals(login)
-                        ) {
-                            o.onNext(true);
-                            o.onComplete();
-                            login="";
-                            break;
+                    if (people!=null) {
+                        for (Person person : people) {
+                            if (person.login.equals(login)
+                            ) {
+                                o.onNext(false);
+                                o.onComplete();
+                                login = "  ";
+                                break;
+                            }
                         }
                     }
-                    if (login.equals("")){o.onNext(false);o.onComplete();}
+                    if (!login.equals("  ")){o.onNext(true);o.onComplete();}
                 }
         );
     }
 
     public void addToDatabase(String login,String password){
+
+        Log.d("LOG","Hello from addToDatabase");
         person = new Person();
         person.login = login;
         person.password = password;
@@ -97,7 +103,7 @@ public class RegistrationOfPerson extends AppCompatActivity {
     }
 
     Intent createPersonAndIntent(String login){
-
+        Log.d("LOG","Hello from createPerson");
         Intent intent = new Intent(RegistrationOfPerson.this,AccountOfPerson.class);
 
         intent.putExtra("login",login);
