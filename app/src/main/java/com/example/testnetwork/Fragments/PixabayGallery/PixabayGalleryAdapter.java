@@ -27,20 +27,18 @@ public class PixabayGalleryAdapter extends RecyclerView.Adapter<PixabayGalleryAd
     @NonNull
     @Override
     public PixabayViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        return new PixabayViewHolder( LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.picture_item_layout,null));
+        return new PixabayViewHolder( LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.picture_item_layout,viewGroup,false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull PixabayViewHolder pixabayViewHolder, int position) {
-        pixabayViewHolder.txtUserName.setText(arrayList.get(position).getUser());
-        pixabayViewHolder.txtLikes.setText(arrayList.get(position).getLikes());
-        Picasso.with(context).load(arrayList.get(position).getLargeImageURL()).into(pixabayViewHolder.imageItem);
+        Picasso.with(context).load(arrayList.get(position).getLargeImageURL()).fit().centerInside().into(pixabayViewHolder.imageItem);
+        pixabayViewHolder.txtUserName.setText("User: "+arrayList.get(position).getUser());
+        pixabayViewHolder.txtLikes.setText("Likes: "+arrayList.get(position).getLikes());
     }
 
     @Override
-    public int getItemCount() {
-        return arrayList.size();
-    }
+    public int getItemCount() { return arrayList.size(); }
 
     class PixabayViewHolder extends RecyclerView.ViewHolder{
         TextView txtUserName;

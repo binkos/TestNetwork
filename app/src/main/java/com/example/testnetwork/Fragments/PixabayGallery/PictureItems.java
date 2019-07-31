@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class PictureItems {
 
-    @SerializedName("hints")
+    @SerializedName("hits")
     @Expose
     private PictureItem[] pictures;
 

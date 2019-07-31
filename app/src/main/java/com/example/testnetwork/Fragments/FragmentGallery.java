@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.testnetwork.Fragments.PixabayGallery.GalleryAPIService;
@@ -33,7 +34,6 @@ public class FragmentGallery extends Fragment {
         return inflater.inflate(R.layout.gallery_fragment_layout,container,false);
     }
 
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
@@ -48,17 +48,11 @@ public class FragmentGallery extends Fragment {
 
                 recyclerView = view.findViewById(R.id.recycler_gallery_view);
 
-                try {
-                    int i =response.body().getPictures().length;
-                }catch (NullPointerException n){
-                    Toast.makeText(getContext(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
-                }
+                ArrayList<PictureItem> photoList = new ArrayList<>(Arrays.asList(response.body().getPictures()));
 
-
-
-                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+                galleryAdapter = new PixabayGalleryAdapter(getContext(),photoList);
                 recyclerView.setAdapter(galleryAdapter);
-                recyclerView.setLayoutManager(layoutManager);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             }
 
             @Override
