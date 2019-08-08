@@ -1,5 +1,6 @@
 package com.example.testnetwork.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.testnetwork.Fragments.PixabayGallery.GalleryAPIService;
+import com.example.testnetwork.Fragments.PixabayGallery.MyDialogFragment;
 import com.example.testnetwork.Fragments.PixabayGallery.PictureItem;
 import com.example.testnetwork.Fragments.PixabayGallery.PictureItems;
 import com.example.testnetwork.Fragments.PixabayGallery.PixabayGalleryAdapter;
@@ -25,17 +27,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FragmentGallery extends Fragment {
+public class FragmentGallery extends Fragment implements PixabayGalleryAdapter.onItemClickListener {
     private RecyclerView recyclerView;
     private PixabayGalleryAdapter galleryAdapter;
+    ArrayList<PictureItem> photoList;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.gallery_fragment_layout,container,false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.gallery_fragment_layout,container,false);
 
         Call<PictureItems> pictureItemsCall = GalleryAPIService.getInstance().getRequest().getPictures();
         pictureItemsCall.enqueue(new Callback<PictureItems>() {
@@ -48,19 +47,31 @@ public class FragmentGallery extends Fragment {
 
                 recyclerView = view.findViewById(R.id.recycler_gallery_view);
 
-                ArrayList<PictureItem> photoList = new ArrayList<>(Arrays.asList(response.body().getPictures()));
+                photoList = new ArrayList<>(Arrays.asList(response.body().getPictures()));
 
                 galleryAdapter = new PixabayGalleryAdapter(getContext(),photoList);
+                galleryAdapter.setOnItemClickListener(FragmentGallery.this);
                 recyclerView.setAdapter(galleryAdapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            }
 
+            }
             @Override
             public void onFailure(Call<PictureItems> call, Throwable t) {
-                Toast.makeText(getContext(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Something went wrong with request...Please try later!", Toast.LENGTH_SHORT).show();
             }
         });
 
 
+        return view;
     }
+
+    @Override
+    public void onItemClick(int position) {
+        Intent intent = new Intent(getContext(), MyDialogFragment.class);
+        //Toast.makeText(getContext(), photoList.get(position).getLargeImageURL(), Toast.LENGTH_SHORT).show();
+        intent.putExtra("url",photoList.get(position).getLargeImageURL());
+        intent.putExtra("username",photoList.get(position).getUser());
+        intent.putExtra("likes",photoList.get(position).getLikes());
+        startActivity(intent);
+            }
 }

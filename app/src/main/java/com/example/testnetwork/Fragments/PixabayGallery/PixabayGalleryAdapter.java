@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.testnetwork.R;
 import com.squareup.picasso.Picasso;
@@ -18,6 +19,15 @@ public class PixabayGalleryAdapter extends RecyclerView.Adapter<PixabayGalleryAd
 
     private ArrayList<PictureItem> arrayList;
     private Context context;
+    private onItemClickListener mListener;
+
+    public interface onItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(onItemClickListener listener){
+        mListener = listener;
+    }
 
     public PixabayGalleryAdapter(Context context,ArrayList<PictureItem> arrayList) {
         this.arrayList = arrayList;
@@ -27,7 +37,8 @@ public class PixabayGalleryAdapter extends RecyclerView.Adapter<PixabayGalleryAd
     @NonNull
     @Override
     public PixabayViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        return new PixabayViewHolder( LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.picture_item_layout,viewGroup,false));
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.picture_item_layout,viewGroup,false);
+        return new PixabayViewHolder(view);
     }
 
     @Override
@@ -35,6 +46,8 @@ public class PixabayGalleryAdapter extends RecyclerView.Adapter<PixabayGalleryAd
         Picasso.with(context).load(arrayList.get(position).getLargeImageURL()).fit().centerInside().into(pixabayViewHolder.imageItem);
         pixabayViewHolder.txtUserName.setText("User: "+arrayList.get(position).getUser());
         pixabayViewHolder.txtLikes.setText("Likes: "+arrayList.get(position).getLikes());
+
+
     }
 
     @Override
@@ -50,6 +63,16 @@ public class PixabayGalleryAdapter extends RecyclerView.Adapter<PixabayGalleryAd
             txtUserName = itemView.findViewById(R.id.username_view);
             txtLikes = itemView.findViewById(R.id.likes_view);
             imageItem = itemView.findViewById(R.id.picture_view);
+
+            itemView.setOnClickListener(v -> {
+                if (mListener!=null){
+                    int position = getAdapterPosition();
+                    if (position!=RecyclerView.NO_POSITION){
+                        mListener.onItemClick(position);
+                    }
+                }
+            });
+
         }
     }
 
