@@ -1,6 +1,8 @@
 package com.example.testnetwork;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -28,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
     Button LogIn;
     AppDataBase app;
     PersonDao personDao;
+    SharedPreferences settings = null;
+    SharedPreferences.Editor editor = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +45,18 @@ public class MainActivity extends AppCompatActivity {
         app = App.getInstance().getDataBase();
         personDao = app.personDao();
         registration = findViewById(R.id.reg);
-        
+
+        settings = getApplicationContext().getSharedPreferences("USER INFO", Context.MODE_PRIVATE);
+        editor = settings.edit();
+
+        if (settings!=null){
+            if (settings.getBoolean("User signed in",false)){
+                Intent intent = new Intent(this,AccountOfPerson.class);
+                intent.putExtra("login",settings.getString("User Login",null));
+                intent.putExtra("User Password",settings.getString("User Password",null));
+                startActivity(intent);
+            }
+        }
 
         registration.setOnClickListener(e->{
             Intent intent = new Intent(this,RegistrationOfPerson.class);
@@ -59,6 +75,10 @@ public class MainActivity extends AppCompatActivity {
                                         Intent intent = new Intent(this,AccountOfPerson.class);
                                         intent.putExtra("login",o[0]);
                                         intent.putExtra("password",o[1]);
+                                        editor.putBoolean("User signed in",true);
+                                        editor.putString("User Login",o[0]);
+                                        editor.putString("User Password",o[1]);
+                                        editor.apply();
                                         startActivity(intent);
                                     }else {
                                         logField.setText("you didn't log in");
@@ -98,8 +118,20 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
+    @Override
+    protected void onRestart() {
 
+        if (settings!=null){
+            if (settings.getBoolean("User signed in",false)){
+                Intent intent = new Intent(this,AccountOfPerson.class);
+                intent.putExtra("login",settings.getString("User Login",null));
+                intent.putExtra("User Password",settings.getString("User Password",null));
+                startActivity(intent);
+            }
+        }
 
+        super.onRestart();
+    }
 }
 
 

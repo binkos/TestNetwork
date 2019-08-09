@@ -1,5 +1,8 @@
 package com.example.testnetwork;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -27,6 +30,8 @@ public class AccountOfPerson extends AppCompatActivity implements NavigationView
     static Person person;
     NavigationView navigationView;
     DrawerLayout drawerLayout;
+    SharedPreferences pref = null;
+    SharedPreferences.Editor editor = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,6 +40,8 @@ public class AccountOfPerson extends AppCompatActivity implements NavigationView
         drawerLayout = findViewById(R.id.drawer_layout);
         app = App.getInstance().getDataBase();
         personDao = app.personDao();
+
+
 
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -69,7 +76,15 @@ public class AccountOfPerson extends AppCompatActivity implements NavigationView
             case R.id.nav_geolocation:
                 getSupportFragmentManager().beginTransaction().replace(R.id.view_container,new FragmentGeolocation()).commit();
                 break;
-
+            case R.id.nav_exit:
+                pref = getApplicationContext().getSharedPreferences("USER INFO",MODE_PRIVATE);
+                editor = pref.edit();
+                editor.remove("User signed in");
+                editor.remove("User Login");
+                editor.remove("User Password");
+                editor.apply();
+                finish();
+                break;
 
         }
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -78,8 +93,19 @@ public class AccountOfPerson extends AppCompatActivity implements NavigationView
         return true;
     }
 
-
-    public  static final Person getUserInfo(){
+    public  static Person getUserInfo(){
         return person;
     }
+
+
+        @Override
+        public void onBackPressed() {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+    }
+
+
+
 }

@@ -6,15 +6,15 @@ import com.google.gson.annotations.SerializedName;
 public class PictureItem {
     @SerializedName("user")
     @Expose
-    String user;
+    private String user;
 
     @SerializedName("largeImageURL")
     @Expose
-    String largeImageURL;
+    private String largeImageURL;
 
     @SerializedName("likes")
     @Expose
-    int likes;
+    private int likes;
 
     public String getUser() {
         return user;

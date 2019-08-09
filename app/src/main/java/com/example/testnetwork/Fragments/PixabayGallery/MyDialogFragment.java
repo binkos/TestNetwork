@@ -32,7 +32,6 @@ public class MyDialogFragment extends AppCompatActivity {
             textViewUserName.setText("Username: "+  intent.getStringExtra("username"));
             textViewLikes.setText("User: "+intent.getIntExtra("likes",0));
 
-
             Toast.makeText(getApplicationContext(),intent.getStringExtra("url"),Toast.LENGTH_LONG).show();
 
         }
