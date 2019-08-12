@@ -1,5 +1,6 @@
 package com.example.testnetwork;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("CheckResult")
     public void Login(View view){
         if (!logField.getText().toString().trim().equals("")){
             LoggedIn().subscribeOn(Schedulers.io())
@@ -80,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
                                         editor.putString("User Password",o[1]);
                                         editor.apply();
                                         startActivity(intent);
+                                        logField.setText("");
+                                        pasField.setText("");
                                     }else {
                                         logField.setText("you didn't log in");
                                         pasField.setText("you didn't log in");
