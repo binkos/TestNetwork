@@ -3,7 +3,7 @@ package com.example.testnetwork.Fragments.MapsAPI;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-class MapsStep {
+ public class MapsStep {
     @SerializedName("distance")
     @Expose
     private String distanceTextValue;

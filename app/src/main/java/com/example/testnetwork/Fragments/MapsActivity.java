@@ -5,9 +5,11 @@ import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.example.testnetwork.Fragments.MapsAPI.MapsAPIService;
 import com.example.testnetwork.Fragments.MapsAPI.MapsArray;
+import com.example.testnetwork.Fragments.MapsAPI.MapsStep;
 import com.example.testnetwork.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -16,6 +18,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,6 +31,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private Double Lang;
     private Double Long;
+    private LatLng[] latLngs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,21 +75,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 new LatLng(53.911446, 27.427963)
         ));
 
-        Call<MapsArray> mapsArrayCall = MapsAPIService.getInstance().getRequest().getMapsObject("ул. Нёманская 6, Минск","ул. Янки Мавра 47, Минск");
+        Call<MapsArray> mapsArrayCall = MapsAPIService.getInstance().getRequest().getMapsObject("Нёманская 6","Янки Мавра 47");
 
         mapsArrayCall.enqueue(new Callback<MapsArray>() {
             @Override
             public void onResponse(Call<MapsArray> call, Response<MapsArray> response) {
 
-            }
+                int i = response.body().getMapsObjects().length;
 
+                Toast.makeText(getApplicationContext(),i+"",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),response.body().getMapsObjects().length,Toast.LENGTH_SHORT).show();
+
+//                mMap.addMarker(new MarkerOptions().position(new LatLng(
+//                        response.body().getMapsObjects()[0].getMapsLegs()[0].getMapsSteps()[0].getStart_location().getLat(),
+//                        response.body().getMapsObjects()[0].getMapsLegs()[0].getMapsSteps()[0].getStart_location().getLng())
+//                ).title("home"));
+//                for (int i = 0;i<mapsSteps.length;i++){
+//                    latLngs[i] = new LatLng(mapsSteps[i].getStart_location().getLat(),mapsSteps[i].getStart_location().getLng());
+//                }
+            }
             @Override
             public void onFailure(Call<MapsArray> call, Throwable t) {
-
+                Toast.makeText(getApplicationContext(),"FAIL",Toast.LENGTH_SHORT).show();
             }
         });
 
-
+        //mMap.addPolyline(new PolylineOptions().add(latLngs));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions

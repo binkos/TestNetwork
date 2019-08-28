@@ -46,7 +46,6 @@ public class FragmentGallery extends Fragment implements PixabayGalleryAdapter.o
                 }
 
                 recyclerView = view.findViewById(R.id.recycler_gallery_view);
-
                 photoList = new ArrayList<>(Arrays.asList(response.body().getPictures()));
 
                 galleryAdapter = new PixabayGalleryAdapter(getContext(),photoList);
@@ -60,7 +59,6 @@ public class FragmentGallery extends Fragment implements PixabayGalleryAdapter.o
                 Toast.makeText(getContext(), "Something went wrong with request...Please try later!", Toast.LENGTH_SHORT).show();
             }
         });
-
 
         return view;
     }
