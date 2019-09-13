@@ -14,6 +14,13 @@ public class MapsObject {
     @Expose
     private MapsLegs[] mapsLegs;
 
+    @SerializedName("overview_polyline")
+    @Expose
+    private MapsOverviewPolyline mapsOverviewPolyline;
+
+    public MapsOverviewPolyline getMapsOverviewPolyline() {
+        return mapsOverviewPolyline;
+    }
 
     public String getCopyrights(){
         return copyrights;

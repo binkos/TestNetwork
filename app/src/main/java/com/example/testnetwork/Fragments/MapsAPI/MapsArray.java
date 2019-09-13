@@ -12,10 +12,6 @@ public class MapsArray {
     @Expose
     private String status;
 
-    @SerializedName("overview_polyline")
-    @Expose
-    private MapsOverviewPolyline mapsOverviewPolyline;
-
     public MapsObject[] getMapsObjects(){
         return mapsObjects;
     }
@@ -24,7 +20,4 @@ public class MapsArray {
         return status;
     }
 
-    public MapsOverviewPolyline getMapsOverviewPolyline() {
-        return mapsOverviewPolyline;
-    }
 }

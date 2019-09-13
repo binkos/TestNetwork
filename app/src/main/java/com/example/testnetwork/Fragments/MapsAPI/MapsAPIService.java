@@ -29,7 +29,6 @@ public class MapsAPIService  {
     }
 
     public RequestMapsInterface getRequest() {
-
     return mMapsRetrofit.create(RequestMapsInterface.class);
     }
 }

@@ -51,9 +51,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".Fragments$Alarm.AlarmService"
-            android:enabled="true"/>
-        <receiver android:name=".Fragments$Alarm.AlarmReceiver" />
+        <receiver android:name=".Fragments.Alarm.AlarmReceiver" />
     </application>
 
 </manifest>

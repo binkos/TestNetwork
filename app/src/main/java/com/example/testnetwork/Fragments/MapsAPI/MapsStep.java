@@ -6,11 +6,11 @@ import com.google.gson.annotations.SerializedName;
  public class MapsStep {
     @SerializedName("distance")
     @Expose
-    private String distanceTextValue;
+    private MapsTextValue distanceTextValue;
 
     @SerializedName("duration")
     @Expose
-    private String durationTextValue;
+    private MapsTextValue durationTextValue;
 
     @SerializedName("start_location")
     @Expose
@@ -20,11 +20,11 @@ import com.google.gson.annotations.SerializedName;
     @Expose
     private MapsLatLng end_location;
 
-    public String getDistanceTextValue() {
+    public MapsTextValue getDistanceTextValue() {
         return distanceTextValue;
     }
 
-    public String getDurationTextValue() {
+    public MapsTextValue getDurationTextValue() {
         return durationTextValue;
     }
 

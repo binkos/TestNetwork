@@ -1,5 +1,8 @@
 package com.example.testnetwork;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,7 +15,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.testnetwork.Fragments.Alarm.AlarmReceiver;
 import com.example.testnetwork.Fragments.FragmentGallery;
 import com.example.testnetwork.Fragments.FragmentGeolocation;
 import com.example.testnetwork.Fragments.FragmentMail;
@@ -22,6 +27,8 @@ import com.example.testnetwork.Person.App;
 import com.example.testnetwork.Person.AppDataBase;
 import com.example.testnetwork.Person.Person;
 import com.example.testnetwork.Person.PersonDao;
+
+import java.util.Calendar;
 
 
 public class AccountOfPerson extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -54,6 +61,8 @@ public class AccountOfPerson extends AppCompatActivity implements NavigationView
         if (extras!=null){
 
             person = personDao.getByLogin(extras.getString("login"));
+        }else {
+            person = personDao.getByLogin(getApplicationContext().getSharedPreferences("USER INFO",MODE_PRIVATE).getString("User Login",null));
         };
         getSupportFragmentManager().beginTransaction().replace(R.id.view_container,new FragmentProfile()).commit();
         }
@@ -76,6 +85,10 @@ public class AccountOfPerson extends AppCompatActivity implements NavigationView
             case R.id.nav_geolocation:
                 getSupportFragmentManager().beginTransaction().replace(R.id.view_container,new FragmentGeolocation()).commit();
                 break;
+            case R.id.nav_share:
+                break;
+            case R.id.nav_send:
+                break;
             case R.id.nav_exit:
                 pref = getApplicationContext().getSharedPreferences("USER INFO",MODE_PRIVATE);
                 editor = pref.edit();
@@ -85,19 +98,14 @@ public class AccountOfPerson extends AppCompatActivity implements NavigationView
                 editor.apply();
                 finish();
                 break;
-
         }
         drawerLayout.closeDrawer(GravityCompat.START);
-
-
         return true;
     }
 
-    public  static Person getUserInfo(){
+    public static Person getUserInfo(){
         return person;
     }
-
-
         @Override
         public void onBackPressed() {
             Intent intent = new Intent(Intent.ACTION_MAIN);
@@ -105,7 +113,5 @@ public class AccountOfPerson extends AppCompatActivity implements NavigationView
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
     }
-
-
 
 }

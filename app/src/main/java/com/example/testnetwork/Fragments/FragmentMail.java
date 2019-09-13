@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.testnetwork.AccountOfPerson;
 import com.example.testnetwork.Fragments.Alarm.AlarmReceiver;
 import com.example.testnetwork.R;
 
@@ -35,16 +36,11 @@ import static android.support.v4.content.ContextCompat.getSystemService;
 
 public class FragmentMail extends Fragment {
 
-
-    public static FragmentMail context;
     AlarmManager am;
     PendingIntent pi;
     TextView alarmTV;
     Button setAlarmBTN;
     Button canAlarmBTN;
-
-
-
     int hour;
     int min;
 
@@ -62,16 +58,12 @@ public class FragmentMail extends Fragment {
             min = m;
             alarmTV.setText(h+":"+m);
 
-            Intent intent = new Intent(getContext(),AlarmReceiver.class);
+            Intent intent = new Intent(getActivity().getApplicationContext(),AlarmReceiver.class);
             intent.putExtra("hours",h);
             intent.putExtra("minutes",m);
 
-            pi = PendingIntent.getBroadcast(getContext(),1,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-
+            pi = PendingIntent.getBroadcast(getActivity().getApplicationContext(),1,intent,PendingIntent.FLAG_UPDATE_CURRENT);
         };
-
-
-
 
         setAlarmBTN.setOnClickListener(v -> {
             TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),timeSetListener,c.get(Calendar.HOUR),c.get(Calendar.MINUTE), false);
@@ -80,16 +72,16 @@ public class FragmentMail extends Fragment {
             Toast.makeText(getContext(),System.currentTimeMillis()+"",Toast.LENGTH_SHORT).show();
 
             am = (AlarmManager) view.getContext().getSystemService(Context.ALARM_SERVICE);
-            am.set(AlarmManager.RTC,System.currentTimeMillis()+400,pi);
-
+            am.set(AlarmManager.RTC,System.currentTimeMillis()+4000,pi);
+            Toast.makeText(getContext(),"Alarm is started",Toast.LENGTH_SHORT).show();
         });
 
         canAlarmBTN.setOnClickListener(v -> {
             alarmTV.setText("");
             am.cancel(pi);
+            Toast.makeText(getContext(),"Alarm is canceled",Toast.LENGTH_SHORT).show();
         });
 
         return view;
     }
-
 }

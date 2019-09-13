@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,8 +47,6 @@ public class PixabayGalleryAdapter extends RecyclerView.Adapter<PixabayGalleryAd
         Picasso.with(context).load(arrayList.get(position).getLargeImageURL()).fit().centerInside().into(pixabayViewHolder.imageItem);
         pixabayViewHolder.txtUserName.setText("User: "+arrayList.get(position).getUser());
         pixabayViewHolder.txtLikes.setText("Likes: "+arrayList.get(position).getLikes());
-
-
     }
 
     @Override
@@ -63,6 +62,7 @@ public class PixabayGalleryAdapter extends RecyclerView.Adapter<PixabayGalleryAd
             txtUserName = itemView.findViewById(R.id.username_view);
             txtLikes = itemView.findViewById(R.id.likes_view);
             imageItem = itemView.findViewById(R.id.picture_view);
+
 
             itemView.setOnClickListener(v -> {
                 if (mListener!=null){

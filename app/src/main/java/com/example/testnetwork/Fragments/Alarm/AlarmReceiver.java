@@ -24,28 +24,21 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-//        FragmentMail instance = FragmentMail.getContextFragment();
-//        instance.setAlarmInfo("Wake up! Wake up! Wake up!");
-//
-//        Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-//        Ringtone ringtone = RingtoneManager.getRingtone(context, uri);
-//        ringtone.play();
+
         Toast.makeText(context,"HELLO",Toast.LENGTH_SHORT).show();
 
-        NotificationCompat.Builder builder =
+        Notification notification =
                 new NotificationCompat.Builder(context,"YOUR_CHANNEL_ID")
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setContentTitle("Title")
                         .setContentText("You choose time: "+ intent.getIntExtra("hours",0)+": "+intent.getIntExtra("minutes",0))
                         .setTicker("You have notification...")
                         .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
-                        .setVibrate(new long[]{400,800,1000});
-
-        Notification notification = builder.build();
+                        .setVibrate(new long[]{400,800,1000})
+                        .build();
 
         manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(1,notification);
-
 
     }
 }

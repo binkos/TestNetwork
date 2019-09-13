@@ -7,11 +7,11 @@ public class MapsLegs {
 
     @SerializedName("distance")
     @Expose
-    private String distanceTextValue;
+    private MapsTextValue distanceTextValue;
 
     @SerializedName("duration")
     @Expose
-    private String durationTextValue;
+    private MapsTextValue durationTextValue;
 
     @SerializedName("end_address")
     @Expose
@@ -33,11 +33,11 @@ public class MapsLegs {
     @Expose
     private MapsStep[] mapsSteps ;
 
-    public String getDistanceTextValue() {
+    public MapsTextValue getDistanceTextValue() {
         return distanceTextValue;
     }
 
-    public String getDurationTextValue() {
+    public MapsTextValue getDurationTextValue() {
         return durationTextValue;
     }
 

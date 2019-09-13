@@ -109,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
                             if (person.login.equals(log)
                                     &&person.password.equals(pas)
                             ) {
+
                                 o.onNext(new String[]{log,pas});
                                 o.onComplete();
                                 log="";
