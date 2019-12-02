@@ -2,6 +2,7 @@ package com.example.testnetwork.Fragments;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -30,10 +31,11 @@ import com.google.android.gms.location.SettingsClient;
 
 public class FragmentGeolocation extends Fragment {
     private boolean requestingLocationUpdates;
+    //private boolean requestLastKnownLocation=false;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private LocationRequest mLocationRequest;
     private LocationSettingsRequest mLocationSettingsRequest;
-    private Location mCurrentLocation;
+    private Location mCurrentLocation=null;
     private LocationCallback mLocationCallback;
     private SettingsClient mSettingClient;
 
@@ -42,6 +44,7 @@ public class FragmentGeolocation extends Fragment {
     Button startLocationUpdatesButton;
     Button stopLocationUpdatesButton;
     TextView currentLocationView;
+    Button showLocationOnTheMap;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -58,6 +61,7 @@ public class FragmentGeolocation extends Fragment {
         getLastKnownLocationButton = getView().findViewById(R.id.get_last_known_location_button);
         startLocationUpdatesButton= getView().findViewById(R.id.start_location_updates_button);
         stopLocationUpdatesButton = getView().findViewById(R.id.stop_location_updates_button);
+        showLocationOnTheMap = getView().findViewById(R.id.open_map);
         initButtons();
     }
 
@@ -66,8 +70,9 @@ public class FragmentGeolocation extends Fragment {
         switch (requestCode){
             case MY_PERMISSION_RESULT_CODE:
                 if (grantResults.length>0&&grantResults[0]==PackageManager.PERMISSION_GRANTED){
-                    getLastKnownLocation();
-                    Toast.makeText(getContext(),"Latitude is "+mCurrentLocation.getLatitude()+" Longitude is"+ mCurrentLocation.getLongitude(),Toast.LENGTH_SHORT).show();
+                    if (getLastKnownLocation())
+                        Toast.makeText(getContext(), "Latitude is " + mCurrentLocation.getLatitude() + " Longitude is" + mCurrentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
+
                 }else {
                     Toast.makeText(getContext(),"FAIL",Toast.LENGTH_SHORT).show();
                 }
@@ -76,10 +81,13 @@ public class FragmentGeolocation extends Fragment {
     }
 
     @SuppressLint("MissingPermission")
-    private void getLastKnownLocation(){
+    private boolean getLastKnownLocation(){
         mFusedLocationProviderClient.getLastLocation().addOnCompleteListener(getActivity(),task -> {
-             mCurrentLocation = task.getResult();
+            Toast.makeText(getContext(), "CurrentLocation is: "+task.getResult(), Toast.LENGTH_SHORT).show();
+            mCurrentLocation = task.getResult();
+
         });
+        return true;
     }
 
      private void createRequest(){
@@ -112,8 +120,8 @@ public class FragmentGeolocation extends Fragment {
              if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
                  ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION},MY_PERMISSION_RESULT_CODE);
              }else {
-                 getLastKnownLocation();
-                 Toast.makeText(getContext(),"Latitude is "+mCurrentLocation.getLatitude()+" Longitude is"+ mCurrentLocation.getLongitude(),Toast.LENGTH_SHORT).show();
+                 if (getLastKnownLocation())
+                     Toast.makeText(getContext(),"Latitude is "+mCurrentLocation.getLatitude()+" Longitude is"+ mCurrentLocation.getLongitude(),Toast.LENGTH_SHORT).show();
              }
          });
 
@@ -142,8 +150,19 @@ public class FragmentGeolocation extends Fragment {
 
          });
 
+         showLocationOnTheMap.setOnClickListener(v->{
+             Intent intent = new Intent(getContext(),MapsActivity.class);
+             if (mCurrentLocation!=null){
+                 intent.putExtra("Latitude",mCurrentLocation.getLatitude());
+                 intent.putExtra("Longitude",mCurrentLocation.getLongitude());
+             }
+             startActivity(intent);
+
+         });
+
      }
 
+    @SuppressLint("SetTextI18n")
     private void updateLocationUI() {
         if (mCurrentLocation!=null){
         currentLocationView.setText("Current Location: "+mCurrentLocation.getLatitude()+", "+mCurrentLocation.getLongitude());}
